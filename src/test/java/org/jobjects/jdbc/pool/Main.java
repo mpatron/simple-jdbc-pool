@@ -13,6 +13,7 @@ public class Main {
 		System.out.println(""+rul);
 		File f = new File(rul.toURI());
 		System.out.println(f.exists());
+		
 	}
 
 }
