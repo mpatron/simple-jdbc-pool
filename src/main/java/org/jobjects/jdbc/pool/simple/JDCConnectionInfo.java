@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cette classe donne des informations du dictionaire de la base de donn�es.
+ * Cette classe donne des informations du dictionaire de la base de données.
  * 
  * @see org.jobjects.dao.jdbc.v1
- * @author Micka�l PATRON
+ * @author Mickaël PATRON
  * @version $Id: ConnectionInfo.java,v 1.0 2001/05/22 21:10:35 curcuru Exp $
  */
 
@@ -26,9 +26,9 @@ public class JDCConnectionInfo {
 	 * Constructeur.
 	 * 
 	 * @param conn
-	 *            est la connection vers la base de donn�e.
+	 *            est la connection vers la base de donnée.
 	 * @param schemaName
-	 *            est le nom du schema de la base de donn�e.
+	 *            est le nom du schema de la base de donnée.
 	 */
 	public JDCConnectionInfo(Connection conn, String schemaName)
 			throws SQLException {
@@ -39,15 +39,15 @@ public class JDCConnectionInfo {
 	// ---------------------------------------------------------------------------
 
 	/**
-	 * La liste des tables parentes de la table pass�e en param�tre.
+	 * La liste des tables parentes de la table pass�e en paramêtre.
 	 * {@link #getChildTables(String) getComponentAt}
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des tables sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getParentTables(String tableName) throws SQLException {
 		List<String> returnValue = new ArrayList<String>();
@@ -65,14 +65,14 @@ public class JDCConnectionInfo {
 	// ---------------------------------------------------------------------------
 
 	/**
-	 * Liste des tables enfantes de la table pass�e en param�tre.
+	 * Liste des tables enfantes de la table pass�e en paramêtre.
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des tables sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getChildTables(String tableName) throws SQLException {
 		List<String> returnValue = new ArrayList<String>();
@@ -95,9 +95,9 @@ public class JDCConnectionInfo {
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des champs sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getPrimaryColumns(String tableName) throws SQLException {
 		String chaine;
@@ -121,9 +121,9 @@ public class JDCConnectionInfo {
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des champs sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getImportedPrimaryColumns(String tableName)
 			throws SQLException {
@@ -147,9 +147,9 @@ public class JDCConnectionInfo {
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des tables sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getMandatoryColumns(String tableName)
 			throws SQLException {
@@ -178,15 +178,15 @@ public class JDCConnectionInfo {
 	// ---------------------------------------------------------------------------
 
 	/**
-	 * Liste des noms des champs de la clef primaire qui sont propre � la table
+	 * Liste des noms des champs de la clef primaire qui sont propre à la table
 	 * et qui ne font pas r�ference aux tables parentes.
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des tables sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getOwnPrimaryColumns(String tableName)
 			throws SQLException {
@@ -240,9 +240,9 @@ public class JDCConnectionInfo {
 	 * @param tableName
 	 *            est le nom de la table
 	 * @return un List<String> contenant le nom des champs sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getColumnNames(String tableName) throws SQLException {
 		List<String> returnValue = new ArrayList<String>();
@@ -263,9 +263,9 @@ public class JDCConnectionInfo {
 	 * Liste des noms des tables.
 	 * 
 	 * @return un List<String> contenant le nom des tables sous la forme
-	 *         d'�l�ments de type String
+	 *         d'éléments de type String
 	 * @throws SQLException
-	 *             peut �tre lanc� pour un probl�me de connexion.
+	 *             peut être lancé pour un problème de connexion.
 	 */
 	public List<String> getTables() throws SQLException {
 		List<String> returnValue = new ArrayList<String>();
@@ -287,7 +287,7 @@ public class JDCConnectionInfo {
 	 * Affiche sur la sortie standard le contenu du RecordSet.
 	 * 
 	 * @param rs
-	 *            est le RecordSet � Afficher
+	 *            est le RecordSet à Afficher
 	 * @return rien.
 	 */
 	public static void Affiche(ResultSet rs) {

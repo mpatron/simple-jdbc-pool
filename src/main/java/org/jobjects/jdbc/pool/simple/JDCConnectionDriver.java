@@ -19,11 +19,11 @@ public class JDCConnectionDriver implements Driver {
 	// ---------------------------------------------------------------------------
 
 	public JDCConnectionDriver(String driver, String url, String user,
-			String password) throws ClassNotFoundException,
+			String password, long timeout, long delay) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException, SQLException {
 		DriverManager.registerDriver(this);
 		Class.forName(driver).newInstance();
-		pool = new JDCConnectionPool(url, user, password);
+		pool = new JDCConnectionPool(url, user, password, timeout, delay);
 	}
 
 	// ---------------------------------------------------------------------------
