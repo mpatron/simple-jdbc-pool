@@ -33,13 +33,14 @@ public class JDCConnectionManager {
 			long delay = Integer.parseInt(properties.getProperty("delay"));
 
 			StringBuffer sb = new StringBuffer();
-			sb.append("Driver simple propriétés : "+System.getProperty("line.separator"));
-			sb.append("driver=" + driver + System.getProperty("line.separator"));
-			sb.append("url=" + url + System.getProperty("line.separator"));
-			sb.append("user=" + user + System.getProperty("line.separator"));
-			sb.append("password=" + password + System.getProperty("line.separator"));
-			sb.append("timeout=" + timeout + System.getProperty("line.separator"));
-			sb.append("delay=" + delay + System.getProperty("line.separator"));
+			sb.append("Driver simple propriétés : [ ");
+			sb.append(" driver=" + driver);
+			sb.append(" url=" + url);
+			sb.append(" user=" + user);
+			sb.append(" password=" + password);
+			sb.append(" timeout=" + timeout);
+			sb.append(" delay=" + delay);
+			sb.append("]");
 			LOGGER.log(Level.INFO, sb.toString());
 			
 			jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
@@ -67,7 +68,7 @@ public class JDCConnectionManager {
 	// ---------------------------------------------------------------------------
 
 	private Properties getJdbcSimpleProperties() throws Exception {
-		String FILE_NAME = "jdbcSimples.properties";
+		String FILE_NAME = "jdbcSimple.properties";
 		Properties returnValue = new Properties();
 
 		if (returnValue.size() == 0) {
@@ -82,17 +83,6 @@ public class JDCConnectionManager {
 							+ url.toURI());
 					is.close();
 				}
-			}
-		}
-		
-		if (returnValue.size() == 0) {
-			try {
-				//returnValue.put(key, value)
-				ResourceBundle rb = ResourceBundle.getBundle("/jdbcSimples");
-				LOGGER.log(Level.INFO, "url ResourceBundle");	
-				
-			} catch (MissingResourceException  mre ) {
-				LOGGER.log(Level.WARNING, "ResourceBundle Missing");
 			}
 		}
 

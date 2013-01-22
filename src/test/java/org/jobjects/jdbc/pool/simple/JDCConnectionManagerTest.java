@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.jobjects.jdbc.pool;
+package org.jobjects.jdbc.pool.simple;
 
 import static org.junit.Assert.fail;
 
@@ -10,13 +7,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
 import junit.framework.Assert;
 
-import org.jobjects.jdbc.pool.simple.JDCConnectionManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,7 +22,7 @@ import org.junit.Test;
  * @author Mickael
  * 
  */
-public class UserRoleInformationJDBCTest {
+public class JDCConnectionManagerTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -140,6 +135,18 @@ public class UserRoleInformationJDBCTest {
 		Assert.assertNotNull(instance);
 	}
 
+	@Test
+	public void testUserRoleInformationJDBC2() {
+		JDCConnectionManager instance = JDCConnectionManager.getInstance();
+		try {
+			Connection connection=instance.getConnection();
+			connection.close();
+		} catch (Exception e) {
+			Assert.assertTrue(false);
+		}
+		Assert.assertNotNull(instance);
+	}
+	
 //	/**
 //	 * Test method for
 //	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#init(java.util.Map)}
