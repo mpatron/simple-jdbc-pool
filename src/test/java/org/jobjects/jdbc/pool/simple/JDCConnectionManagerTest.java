@@ -140,6 +140,7 @@ public class JDCConnectionManagerTest {
 		JDCConnectionManager instance = JDCConnectionManager.getInstance();
 		try {
 			Connection connection=instance.getConnection();
+			Assert.assertNotNull(connection);
 			connection.close();
 		} catch (Exception e) {
 			Assert.assertTrue(false);
