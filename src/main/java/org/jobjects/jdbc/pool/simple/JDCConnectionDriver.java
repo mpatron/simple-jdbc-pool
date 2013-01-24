@@ -25,7 +25,6 @@ public class JDCConnectionDriver implements Driver {
 		Class.forName(driver).newInstance();
 		pool = new JDCConnectionPool(url, user, password, timeout, delay);
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
@@ -35,46 +34,46 @@ public class JDCConnectionDriver implements Driver {
 		}
 		return pool.getConnection();
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public boolean acceptsURL(String url) {
 		return url.startsWith(URL_PREFIX);
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public int getMajorVersion() {
 		return MAJOR_VERSION;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public int getMinorVersion() {
 		return MINOR_VERSION;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public DriverPropertyInfo[] getPropertyInfo(String str, Properties props) {
 		return new DriverPropertyInfo[0];
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public boolean jdbcCompliant() {
 		return false;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		return null;
 	}
+	// ---------------------------------------------------------------------------
+	
+	public JDCConnectionPool getPool() {
+		return pool;
+	}
+	// ---------------------------------------------------------------------------
 }

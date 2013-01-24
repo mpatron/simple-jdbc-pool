@@ -92,4 +92,8 @@ public class JDCConnectionPool {
 		conn.expireLease();
 	}
 	// ---------------------------------------------------------------------------
+	
+	public synchronized int getConnectionInUse() {
+		return connections.size();
+	}
 }

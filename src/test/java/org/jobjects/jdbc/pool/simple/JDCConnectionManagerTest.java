@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
@@ -23,7 +24,8 @@ import org.junit.Test;
  * 
  */
 public class JDCConnectionManagerTest {
-
+	private static Logger LOGGER = Logger.getLogger(JDCConnectionManagerTest.class.getCanonicalName());
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -37,8 +39,7 @@ public class JDCConnectionManagerTest {
 			p.setProperty("password", "manager");
 			p.setProperty("create", "true");
 
-			Connection conn = DriverManager.getConnection(
-					"jdbc:derby:memory:MyDerbyDB", p);
+			Connection conn = DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB", p);
 
 			{
 				Statement stmt = conn.createStatement();
@@ -104,7 +105,7 @@ public class JDCConnectionManagerTest {
 	public static void tearDownAfterClass() throws Exception {
 		try {
 			// DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
-			System.out.println("Extinction de Derby");
+			LOGGER.info("Extinction de Derby");
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
 		}
