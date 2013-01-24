@@ -1,7 +1,5 @@
 package org.jobjects.jdbc.pool.simple;
 
-import static org.junit.Assert.fail;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,13 +9,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 /**
  * @author Mickael
@@ -94,7 +89,7 @@ public class JDCConnectionManagerTest {
 			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(e.getMessage());
+			throw e;
 		}
 	}
 
@@ -109,20 +104,6 @@ public class JDCConnectionManagerTest {
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
 		}
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
