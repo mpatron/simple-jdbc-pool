@@ -92,6 +92,9 @@
 			    </configuration>
 			</plugin>			
 			<plugin>
+			<!-- 
+http://concurrentlinkedhashmap.googlecode.com/svn/trunk/pom.xml			
+			 -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.2</version>
@@ -126,6 +129,25 @@
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>cobertura-maven-plugin</artifactId>
 							<version>2.5.1</version>
+            <executions>
+                <execution>
+                    <id>site</id>
+                    <phase>pre-site</phase>
+ 
+                    <goals>
+                        <goal>clean</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>instrument</id>
+                    <phase>site</phase>
+ 
+                    <goals>
+                        <goal>instrument</goal>
+                        <goal>cobertura</goal>
+                    </goals>
+                </execution>
+            </executions>							
 						</plugin>
 
 						<plugin>
