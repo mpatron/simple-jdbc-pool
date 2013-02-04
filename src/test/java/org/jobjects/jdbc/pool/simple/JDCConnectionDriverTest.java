@@ -3,6 +3,8 @@
  */
 package org.jobjects.jdbc.pool.simple;
 
+import java.sql.DriverManager;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.testng.annotations.AfterClass;
@@ -37,6 +39,19 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testJDCConnectionDriver() {
+		String driver=null;
+		String url=null;
+		String user=null;
+		String password=null;
+		long timeout=0;
+		long delay=0;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
+			DriverManager.registerDriver(jdriver);
+			DriverManager.deregisterDriver(jdriver);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+		}
 		LOGGER.info("Not yet implemented");
 	}
 

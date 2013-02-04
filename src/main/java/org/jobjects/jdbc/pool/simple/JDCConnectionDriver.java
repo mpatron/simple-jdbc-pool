@@ -21,6 +21,9 @@ public class JDCConnectionDriver implements Driver {
 	public JDCConnectionDriver(String driver, String url, String user,
 			String password, long timeout, long delay) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException, SQLException {
+		if((driver==null)||("".equals(driver))) {
+			throw new ClassNotFoundException("Le driver "+driver+" est introuvable.");
+		}
 		DriverManager.registerDriver(this);
 		Class.forName(driver).newInstance();
 		pool = new JDCConnectionPool(url, user, password, timeout, delay);
