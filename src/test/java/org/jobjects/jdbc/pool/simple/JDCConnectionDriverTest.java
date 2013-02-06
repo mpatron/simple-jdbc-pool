@@ -25,6 +25,7 @@ public class JDCConnectionDriverTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		JDCConnectionManagerTest.setUpBeforeClass();
 	}
 
 	/**
@@ -32,6 +33,7 @@ public class JDCConnectionDriverTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		JDCConnectionManagerTest.tearDownAfterClass();
 	}
 
 	/**
@@ -39,12 +41,12 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testJDCConnectionDriver() {
-		String driver=null;
-		String url=null;
-		String user=null;
-		String password=null;
-		long timeout=0;
-		long delay=0;
+		String driver="org.apache.derby.jdbc.EmbeddedDriver";
+		String url="jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user="sa";
+		String password="manager";
+		long timeout=60000;
+		long delay=300000;
 		try {
 			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
 			DriverManager.registerDriver(jdriver);
