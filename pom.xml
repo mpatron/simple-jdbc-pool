@@ -84,41 +84,40 @@
 				<version>3.2</version>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
-				<configuration>
-					<check>
-						<branchRate>85</branchRate>
-						<lineRate>85</lineRate>
-						<haltOnFailure>true</haltOnFailure>
-						<totalBranchRate>85</totalBranchRate>
-						<totalLineRate>85</totalLineRate>
-						<packageLineRate>85</packageLineRate>
-						<packageBranchRate>85</packageBranchRate>
-						<regexes>
-							<regex>
-								<pattern>com.example.reallyimportant.*</pattern>
-								<branchRate>90</branchRate>
-								<lineRate>80</lineRate>
-							</regex>
-							<regex>
-								<pattern>com.example.boringcode.*</pattern>
-								<branchRate>40</branchRate>
-								<lineRate>30</lineRate>
-							</regex>
-						</regexes>
-					</check>
-				</configuration>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.6.1.201212231917</version>
 				<executions>
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
-							<goal>clean</goal>
-							<goal>check</goal>
+							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<check>
+								<classRatio>100</classRatio>
+								<instructionRatio>90</instructionRatio>
+								<methodRatio>95</methodRatio>
+								<branchRatio>85</branchRatio>
+								<complexityRatio>85</complexityRatio>
+								<lineRatio>90</lineRatio>
+							</check>
+						</configuration>
+					</execution>
 				</executions>
-
 			</plugin>
 		</plugins>
 	</build>
@@ -136,9 +135,9 @@
 				<version>2.12</version>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.6.1.201212231917</version>
 			</plugin>
 		</plugins>
 	</reporting>
