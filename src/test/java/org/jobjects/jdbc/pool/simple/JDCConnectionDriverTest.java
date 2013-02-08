@@ -60,6 +60,21 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testConnect() {
+		String driver="org.apache.derby.jdbc.EmbeddedDriver";
+		String url="jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user="sa";
+		String password="manager";
+		long timeout=60000;
+		long delay=300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
+			DriverManager.registerDriver(jdriver);
+			DriverManager.deregisterDriver(jdriver);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+		}
+		LOGGER.info("Not yet implemented");
+		
 		LOGGER.info("Not yet implemented");
 	}
 
