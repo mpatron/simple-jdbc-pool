@@ -89,9 +89,9 @@
 				<version>0.6.2.201302030002</version>
 				<executions>
 					<execution>
-						<id>prepare-agent</id>
 						<goals>
-							<goal>prepare-agent</goal>
+							<goal>instrument</goal>
+							<goal>restore-instrumented-classes</goal>
 						</goals>
 					</execution>
 					<execution>
