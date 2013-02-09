@@ -15,7 +15,9 @@ public class JDCConnectionDriver implements Driver {
 	private static final int MAJOR_VERSION = 1;
 	private static final int MINOR_VERSION = 0;
 	private JDCConnectionPool pool;
-
+	
+	private static Logger LOGGER = Logger.getLogger(JDCConnectionDriver.class.getCanonicalName());
+	
 	// ---------------------------------------------------------------------------
 
 	public JDCConnectionDriver(String driver, String url, String user,
@@ -32,16 +34,24 @@ public class JDCConnectionDriver implements Driver {
 
 	@Override
 	public Connection connect(String url, Properties props) throws SQLException {
-		if (!url.startsWith(URL_PREFIX)) {
-			return null;
+		Connection returnValue=null;
+		if(acceptsURL(url)) {
+			returnValue=pool.getConnection();
 		}
-		return pool.getConnection();
+		return returnValue;
 	}
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public boolean acceptsURL(String url) {
-		return url.startsWith(URL_PREFIX);
+	public boolean acceptsURL(String url) {		
+		boolean returnValue=false;
+		if((url!=null) && (!"".equals(url.trim()))) {
+			returnValue =url.trim().startsWith(URL_PREFIX);	
+		}
+		if(!returnValue) {
+			LOGGER.warning("L' url suivante n'est pas accepté : "+url);
+		}
+		return returnValue;
 	}
 	// ---------------------------------------------------------------------------
 
