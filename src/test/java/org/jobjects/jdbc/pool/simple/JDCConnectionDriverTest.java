@@ -28,6 +28,7 @@ public class JDCConnectionDriverTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		JDCConnectionManagerTest.setUpBeforeClass();
 	}
 
 	/**
@@ -35,6 +36,7 @@ public class JDCConnectionDriverTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		JDCConnectionManagerTest.tearDownAfterClass();
 	}
 
 	/**

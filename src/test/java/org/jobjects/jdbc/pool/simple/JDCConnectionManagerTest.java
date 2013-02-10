@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.testng.Assert;
@@ -88,8 +89,7 @@ public class JDCConnectionManagerTest {
 
 			conn.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e);
 		}
 	}
 
@@ -103,6 +103,7 @@ public class JDCConnectionManagerTest {
 			LOGGER.info("Extinction de Derby");
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
+			LOGGER.log(Level.INFO, "Erreur prévu : " + ignored.getLocalizedMessage());
 		}
 	}
 
