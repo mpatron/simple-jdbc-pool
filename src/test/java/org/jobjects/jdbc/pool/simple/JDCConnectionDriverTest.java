@@ -23,21 +23,6 @@ public class JDCConnectionDriverTest {
 	private static Logger LOGGER = Logger
 			.getLogger(JDCConnectionDriverTest.class.getCanonicalName());
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		JDCConnectionManagerTest.setUpBeforeClass();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		JDCConnectionManagerTest.tearDownAfterClass();
-	}
 
 	/**
 	 * Test method for

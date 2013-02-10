@@ -10,6 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compileSource>1.7</compileSource>
 	</properties>
+	<!-- http://www.agile-engineering.net/2012/01/unit-test-code-coverage.html -->
 	<developers>
 		<developer>
 			<id>mpatron</id>
@@ -54,6 +55,16 @@
 			<version>6.4</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<!-- must be on the classpath -->
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<classifier>runtime</classifier>
+			<version>0.6.2.201302030002</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -87,6 +98,9 @@
 							<value>true</value>
 						</property>
 					</systemProperties>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
 					<suiteXmlFiles>
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
@@ -101,7 +115,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.6.2.201302030002</version>
-				<!-- 
+				<configuration>
+					<destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
+					<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+				</configuration>
+				<!-- -->
 				<executions>
 					<execution>
 						<goals>
@@ -123,6 +141,7 @@
 						</goals>
 						<configuration>
 							<check>
+								<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
 								<classRatio>100</classRatio>
 								<instructionRatio>90</instructionRatio>
 								<methodRatio>95</methodRatio>
@@ -133,22 +152,22 @@
 						</configuration>
 					</execution>
 				</executions>
-				 -->
 			</plugin>
 		</plugins>
 	</build>
 
 	<reporting>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.6</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.12</version>
+				<version>2.13</version>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>

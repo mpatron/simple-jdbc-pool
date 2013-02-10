@@ -10,8 +10,10 @@
   -->
   <test name="Regression1">
     <classes>
+      <class name="org.jobjects.jdbc.pool.DerbyStart"/>
       <class name="org.jobjects.jdbc.pool.simple.JDCConnectionDriverTest"/>
       <class name="org.jobjects.jdbc.pool.simple.JDCConnectionManagerTest"/>
+      <class name="org.jobjects.jdbc.pool.DerbyStop"/>
     </classes>
   </test>
 </suite>
