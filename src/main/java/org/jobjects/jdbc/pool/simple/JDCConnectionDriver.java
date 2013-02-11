@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -16,18 +17,43 @@ public class JDCConnectionDriver implements Driver {
 	private static final int MINOR_VERSION = 0;
 	private JDCConnectionPool pool;
 	
+	private String driverClassName;
+	private String url;
+	private String user;
+	private String password;
+	private long timeout;
+	private long delay;
+	
 	private static Logger LOGGER = Logger.getLogger(JDCConnectionDriver.class.getCanonicalName());
 	
 	// ---------------------------------------------------------------------------
 
-	public JDCConnectionDriver(String driver, String url, String user,
+	public JDCConnectionDriver(String driverClassName, String url, String user,
 			String password, long timeout, long delay) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException, SQLException {
-		if((driver==null)||("".equals(driver))) {
-			throw new ClassNotFoundException("Le driver "+driver+" est introuvable.");
+		if((driverClassName==null)||("".equals(driverClassName))) {
+			throw new ClassNotFoundException("Le driver "+driverClassName+" est introuvable.");
 		}
-		DriverManager.registerDriver(this);
-		Class.forName(driver).newInstance();
+		this.driverClassName=driverClassName;
+		this.url=url;
+		this.user=user;
+		this.password=password;
+		this.timeout=timeout;
+		this.delay=delay;
+		
+		boolean flag=false;
+		Enumeration<Driver> drivers= DriverManager.getDrivers();
+		while (drivers.hasMoreElements()) {
+			Driver driver = (Driver) drivers.nextElement();
+			if(JDCConnectionDriver.class.equals(driver.getClass())) {
+				flag=true;
+				break;
+			}
+		}
+		if(!flag) {
+			DriverManager.registerDriver(this);
+			Class.forName(driverClassName).newInstance();
+		}
 		pool = new JDCConnectionPool(url, user, password, timeout, delay);
 	}
 	// ---------------------------------------------------------------------------

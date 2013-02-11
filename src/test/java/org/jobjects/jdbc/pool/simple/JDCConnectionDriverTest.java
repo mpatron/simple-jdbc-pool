@@ -23,7 +23,6 @@ public class JDCConnectionDriverTest {
 	private static Logger LOGGER = Logger
 			.getLogger(JDCConnectionDriverTest.class.getCanonicalName());
 
-
 	/**
 	 * Test method for
 	 * {@link org.jobjects.jdbc.pool.simple.JDCConnectionDriver#JDCConnectionDriver(java.lang.String, java.lang.String, java.lang.String, java.lang.String, long, long)}
@@ -39,14 +38,17 @@ public class JDCConnectionDriverTest {
 		long delay = 300000;
 		try {
 			try {
-				new JDCConnectionDriver(null, url, user, password, timeout, delay);
-				Assert.assertTrue(false, "Code inaxessible, il doit y avoir un exception avant.");
+				new JDCConnectionDriver(null, url, user, password, timeout,
+						delay);
+				Assert.assertTrue(false,
+						"Code inaxessible, il doit y avoir un exception avant.");
 			} catch (Throwable t) {
 				Assert.assertTrue(true, "Bonne exception.");
 			}
-			
-			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
-			
+
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
+					user, password, timeout, delay);
+
 			DriverManager.registerDriver(jdriver);
 			DriverManager.deregisterDriver(jdriver);
 		} catch (Exception e) {
@@ -78,20 +80,21 @@ public class JDCConnectionDriverTest {
 			props.setProperty("delay", "300000");
 
 			DriverManager.registerDriver(jdriver);
-			Connection connection= jdriver.connect(url, props);
+			Connection connection = jdriver.connect(url, props);
 			Assert.assertNull(connection);
-			
-			connection= jdriver.connect(JDCConnectionDriver.URL_PREFIX, props);
+
+			connection = jdriver.connect(JDCConnectionDriver.URL_PREFIX, props);
 			Assert.assertNotNull(connection);
-			
-			if(connection!=null) {
+
+			if (connection != null) {
 				connection.close();
 			}
 			DriverManager.deregisterDriver(jdriver);
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
 		}
-		LOGGER.info("Not yet implemented");
+		LOGGER.info("testConnect");
 	}
 
 	/**
@@ -110,7 +113,7 @@ public class JDCConnectionDriverTest {
 		try {
 			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
 					user, password, timeout, delay);
-			
+
 			Assert.assertTrue(jdriver.acceptsURL("jdbc:jdc:"));
 			Assert.assertTrue(jdriver.acceptsURL(" jdbc:jdc:"));
 			Assert.assertTrue(jdriver.acceptsURL(" jdbc:jdc:  "));
@@ -118,11 +121,12 @@ public class JDCConnectionDriverTest {
 			Assert.assertFalse(jdriver.acceptsURL(null));
 			Assert.assertFalse(jdriver.acceptsURL(""));
 			Assert.assertFalse(jdriver.acceptsURL(" "));
-			
+
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
 		}
-		LOGGER.info("Not yet implemented");
+		LOGGER.info("testAcceptsURL");
 	}
 
 	/**
@@ -132,7 +136,20 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testGetMajorVersion() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
+					user, password, timeout, delay);
+			Assert.assertTrue(jdriver.getMajorVersion() == 1);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 	/**
@@ -142,7 +159,20 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testGetMinorVersion() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
+					user, password, timeout, delay);
+			Assert.assertTrue(jdriver.getMinorVersion() == 0);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 	/**
@@ -152,7 +182,22 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testGetPropertyInfo() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
+					user, password, timeout, delay);
+			String urli=null;
+            Properties info=null;
+			Assert.assertTrue(jdriver.getPropertyInfo(urli, info).length==0);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 	/**

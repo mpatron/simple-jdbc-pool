@@ -13,6 +13,8 @@
       <class name="org.jobjects.jdbc.pool.DerbyStart"/>
       <class name="org.jobjects.jdbc.pool.simple.JDCConnectionDriverTest"/>
       <class name="org.jobjects.jdbc.pool.simple.JDCConnectionManagerTest"/>
+      <class name="org.jobjects.jdbc.pool.simple.JDCConnectionPoolTest"/>
+      <class name="org.jobjects.jdbc.pool.simple.JDCConnectionTest"/>
       <class name="org.jobjects.jdbc.pool.DerbyStop"/>
     </classes>
   </test>
