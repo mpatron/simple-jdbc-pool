@@ -10,9 +10,8 @@ import org.testng.annotations.Test;
 
 public class JDCConnectionPoolTest {
 
-	private static Logger LOGGER = Logger.getLogger(JDCConnectionPoolTest.class
-			.getName());
-
+	private Logger LOGGER = Logger.getLogger(getClass().getName());
+	
 	@Test
 	public void JDCConnectionPool() {
 		String driver = "org.apache.derby.jdbc.EmbeddedDriver";

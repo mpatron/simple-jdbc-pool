@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 /**
@@ -47,13 +47,13 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des tables sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des tables sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getParentTables(String tableName) throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getImportedKeys(null, schemaName, tableName);
 		String chaine;
 		while (rs.next()) {
@@ -72,13 +72,13 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des tables sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des tables sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getChildTables(String tableName) throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getExportedKeys(null, schemaName, tableName);
 		String chaine;
 		while (rs.next()) {
@@ -97,14 +97,14 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des champs sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des champs sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getPrimaryColumns(String tableName) throws SQLException {
 		String chaine;
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getPrimaryKeys(null, schemaName, tableName);
 		while (rs.next()) {
 			chaine = rs.getString("COLUMN_NAME");
@@ -123,14 +123,14 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des champs sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des champs sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getImportedPrimaryColumns(String tableName)
 			throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getImportedKeys(null, schemaName, tableName);
 		String chaine;
 		while (rs.next()) {
@@ -149,14 +149,14 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des tables sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des tables sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getMandatoryColumns(String tableName)
 			throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		try {
 			ResultSet rs = metadata.getIndexInfo(null, schemaName, tableName,
 					false, true); // SQLException ici
@@ -186,7 +186,7 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des tables sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des tables sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
@@ -195,7 +195,7 @@ public class JdbcInfo {
 			throws SQLException {
 		String chaine;
 
-		Vector<String> Imported_v = new Vector<String>();
+		ArrayList<String> Imported_v = new ArrayList<String>();
 		try {
 			ResultSet Imported_rs = metadata.getImportedKeys(null, schemaName,
 					tableName);
@@ -209,7 +209,7 @@ public class JdbcInfo {
 			e.printStackTrace();
 		}
 
-		Vector<String> returnValue = new Vector<String>();
+		ArrayList<String> returnValue = new ArrayList<String>();
 		try {
 			ResultSet rs = metadata.getPrimaryKeys(null, schemaName, tableName);
 			while (rs.next()) {
@@ -223,12 +223,12 @@ public class JdbcInfo {
 		}
 
 		@SuppressWarnings("unchecked")
-		Vector<String> clone = (Vector<String>) returnValue.clone();
+		ArrayList<String> clone = (ArrayList<String>) returnValue.clone();
 		int length = clone.size();
 		for (int i = 0; i < length; i++) {
 			chaine = (String) clone.get(i);
 			if (Imported_v.contains(chaine))
-				returnValue.removeElement(chaine);
+				returnValue.remove(chaine);
 		}
 		return returnValue;
 	}
@@ -240,13 +240,13 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant le nom des champs sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des champs sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getColumnNames(String tableName) throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getColumns(null, schemaName, tableName, "%");
 		String chaine;
 		while (rs.next()) {
@@ -263,13 +263,13 @@ public class JdbcInfo {
 	/**
 	 * Liste des noms des tables.
 	 * 
-	 * @return un Vector contenant le nom des tables sous la forme d'�l�ments de
+	 * @return un ArrayList contenant le nom des tables sous la forme d'�l�ments de
 	 *         type String
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<String> getTables() throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		ResultSet rs = metadata.getTables(null, schemaName, "%",
 				new String[] { "TABLE" });
 		String chaine;
@@ -293,7 +293,7 @@ public class JdbcInfo {
 	 */
 	public static void Affiche(ResultSet rs) {
 		try {
-			Vector<String[]> lignes = new Vector<String[]>();
+			ArrayList<String[]> lignes = new ArrayList<String[]>();
 
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int colcount = rsmd.getColumnCount();
@@ -347,13 +347,13 @@ public class JdbcInfo {
 	 * 
 	 * @param tableName
 	 *            est le nom de la table
-	 * @return un Vector contenant les champs de la tables sous la forme
+	 * @return un ArrayList contenant les champs de la tables sous la forme
 	 *         d'�l�ments de type ConnectionField
 	 * @throws SQLException
 	 *             peut �tre lanc� pour un probl�me de connexion.
 	 */
 	public List<JdbcField> getColumns(String tableName) throws SQLException {
-		List<JdbcField> returnValue = new Vector<JdbcField>();
+		List<JdbcField> returnValue = new ArrayList<JdbcField>();
 		ResultSet rs = metadata.getColumns(null, schemaName, tableName, "%");
 		while (rs.next()) {
 			JdbcField cf = new JdbcField(rs.getString("COLUMN_NAME"),
@@ -456,7 +456,7 @@ public class JdbcInfo {
 	// ----------------------------------------------------------------------------------------------------
 
 	public List<String> getForeighTables(String tableName) throws SQLException {
-		List<String> returnValue = new Vector<String>();
+		List<String> returnValue = new ArrayList<String>();
 		try {
 			ResultSet rs = metadata
 					.getImportedKeys(null, schemaName, tableName);

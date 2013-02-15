@@ -9,8 +9,7 @@ public class Main {
 	/**
 	 * Conserve la categorie de login.
 	 */
-	private static Logger LOGGER = Logger.getLogger(Main.class
-			.getCanonicalName());
+	private static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 	/**
 	 * @param args

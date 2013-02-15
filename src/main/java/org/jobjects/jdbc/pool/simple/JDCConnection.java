@@ -22,313 +22,572 @@ import java.util.concurrent.Executor;
 public class JDCConnection implements Connection {
 
 	private JDCConnectionPool pool;
-	private Connection conn;
-	private boolean inuse;
+	private Connection connection;
+	private boolean inUse;
 	private long timestamp;
-
 	// ---------------------------------------------------------------------------
 
-	public JDCConnection(Connection conn, JDCConnectionPool pool) {
-		this.conn = conn;
+	public JDCConnection(Connection connection, JDCConnectionPool pool) {
+		this.connection = connection;
 		this.pool = pool;
-		this.inuse = false;
+		this.inUse = false;
 		this.timestamp = 0;
 	}
+	// ---------------------------------------------------------------------------
 
+	/**
+	 * @return the pool
+	 */
+	protected JDCConnectionPool getPool() {
+		return pool;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @param pool the pool to set
+	 */
+	protected void setPool(JDCConnectionPool pool) {
+		this.pool = pool;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @return the inUse
+	 */
+	protected boolean isInUse() {
+		return inUse;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @param inUse the inUse to set
+	 */
+	protected void setInUse(boolean inUse) {
+		this.inUse = inUse;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @return the timestamp
+	 */
+	protected long getTimestamp() {
+		return timestamp;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	protected void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @return the connection
+	 */
+	protected Connection getConnection() {
+		return connection;
+	}
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * @param connection the connection to set
+	 */
+	protected void setConnection(Connection connection) {
+		this.connection = connection;
+	}
 	// ---------------------------------------------------------------------------
 
 	public synchronized boolean lease() {
 		boolean returnValue = false;
-		if (inuse) {
+		if (inUse) {
 			returnValue = false;
 		} else {
-			inuse = true;
+			inUse = true;
 			timestamp = System.currentTimeMillis();
 			returnValue = true;
 		}
 		return returnValue;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	public boolean validate() {
 		try {
-			conn.getMetaData();
+			connection.getMetaData();
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	public boolean inUse() {
-		return inuse;
+		return inUse;
 	}
-
 	// ---------------------------------------------------------------------------
 
 	public long getLastUse() {
 		return timestamp;
 	}
-
 	// ---------------------------------------------------------------------------
 
+	protected void expireLease() {
+		inUse = false;
+	}
+	// ---------------------------------------------------------------------------
+
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#close()
+	 */
+	@Override
 	public void close() throws SQLException {
 		pool.returnConnection(this);
 	}
 
 	// ---------------------------------------------------------------------------
 
-	protected void expireLease() {
-		inuse = false;
-	}
-
-	// ---------------------------------------------------------------------------
-
-	protected Connection getConnection() {
-		return conn;
-	}
-
-	// ---------------------------------------------------------------------------
-
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String)
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		return conn.prepareStatement(sql);
+		return connection.prepareStatement(sql);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String, int, int)
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql, int resultSetType,
 			int resultSetConcurrency) throws SQLException {
-		return conn.prepareStatement(sql, resultSetType, resultSetConcurrency);
+		return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareCall(java.lang.String)
+	 */
+	@Override
 	public CallableStatement prepareCall(String sql) throws SQLException {
-		return conn.prepareCall(sql);
+		return connection.prepareCall(sql);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareCall(java.lang.String, int, int)
+	 */
+	@Override
 	public CallableStatement prepareCall(String sql, int resultSetType,
 			int resultSetConcurrency) throws SQLException {
-		return conn.prepareCall(sql, resultSetType, resultSetConcurrency);
+		return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createStatement()
+	 */
+	@Override
 	public Statement createStatement() throws SQLException {
-		return conn.createStatement();
+		return connection.createStatement();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createStatement(int, int)
+	 */
+	@Override
 	public Statement createStatement(int resultSetType, int resultSetConcurrency)
 			throws SQLException {
-		return conn.createStatement(resultSetType, resultSetConcurrency);
+		return connection.createStatement(resultSetType, resultSetConcurrency);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#nativeSQL(java.lang.String)
+	 */
+	@Override
 	public String nativeSQL(String sql) throws SQLException {
-		return conn.nativeSQL(sql);
+		return connection.nativeSQL(sql);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setAutoCommit(boolean)
+	 */
+	@Override
 	public void setAutoCommit(boolean autoCommit) throws SQLException {
-		conn.setAutoCommit(autoCommit);
+		connection.setAutoCommit(autoCommit);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getAutoCommit()
+	 */
+	@Override
 	public boolean getAutoCommit() throws SQLException {
-		return conn.getAutoCommit();
+		return connection.getAutoCommit();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#commit()
+	 */
+	@Override
 	public void commit() throws SQLException {
-		conn.commit();
+		connection.commit();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#rollback()
+	 */
+	@Override
 	public void rollback() throws SQLException {
-		conn.rollback();
+		connection.rollback();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#isClosed()
+	 */
+	@Override
 	public boolean isClosed() throws SQLException {
-		return conn.isClosed();
+		return connection.isClosed();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getMetaData()
+	 */
+	@Override
 	public DatabaseMetaData getMetaData() throws SQLException {
-		return conn.getMetaData();
+		return connection.getMetaData();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setReadOnly(boolean)
+	 */
+	@Override
 	public void setReadOnly(boolean readOnly) throws SQLException {
-		conn.setReadOnly(readOnly);
+		connection.setReadOnly(readOnly);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#isReadOnly()
+	 */
+	@Override
 	public boolean isReadOnly() throws SQLException {
-		return conn.isReadOnly();
+		return connection.isReadOnly();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setCatalog(java.lang.String)
+	 */
+	@Override
 	public void setCatalog(String catalog) throws SQLException {
-		conn.setCatalog(catalog);
+		connection.setCatalog(catalog);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getCatalog()
+	 */
+	@Override
 	public String getCatalog() throws SQLException {
-		return conn.getCatalog();
+		return connection.getCatalog();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setTransactionIsolation(int)
+	 */
+	@Override
 	public void setTransactionIsolation(int level) throws SQLException {
-		conn.setTransactionIsolation(level);
+		connection.setTransactionIsolation(level);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getTransactionIsolation()
+	 */
+	@Override
 	public int getTransactionIsolation() throws SQLException {
-		return conn.getTransactionIsolation();
+		return connection.getTransactionIsolation();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getWarnings()
+	 */
+	@Override
 	public SQLWarning getWarnings() throws SQLException {
-		return conn.getWarnings();
+		return connection.getWarnings();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#clearWarnings()
+	 */
+	@Override
 	public void clearWarnings() throws SQLException {
-		conn.clearWarnings();
+		connection.clearWarnings();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getTypeMap()
+	 */
+	@Override
 	public Map<String, Class<?>> getTypeMap() throws SQLException {
-		return conn.getTypeMap();
+		return connection.getTypeMap();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setTypeMap(java.util.Map)
+	 */
+	@Override
 	public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-		conn.setTypeMap(map);
+		connection.setTypeMap(map);
 	}
 
-	/**/
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setHoldability(int)
+	 */
+	@Override
 	public void setHoldability(int holdability) throws SQLException {
-		conn.setHoldability(holdability);
+		connection.setHoldability(holdability);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getHoldability()
+	 */
+	@Override
 	public int getHoldability() throws SQLException {
-		return conn.getHoldability();
+		return connection.getHoldability();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareCall(java.lang.String, int, int, int)
+	 */
+	@Override
 	public CallableStatement prepareCall(String sql, int resultSetType,
 			int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
-		return conn.prepareCall(sql, resultSetType, resultSetConcurrency,
+		return connection.prepareCall(sql, resultSetType, resultSetConcurrency,
 				resultSetHoldability);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String, int, int, int)
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql, int resultSetType,
 			int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
-		return conn.prepareStatement(sql, resultSetType, resultSetConcurrency,
+		return connection.prepareStatement(sql, resultSetType, resultSetConcurrency,
 				resultSetHoldability);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String, int)
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys)
 			throws SQLException {
-		return conn.prepareStatement(sql, autoGeneratedKeys);
+		return connection.prepareStatement(sql, autoGeneratedKeys);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String, int[])
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
 			throws SQLException {
-		return conn.prepareStatement(sql, columnIndexes);
+		return connection.prepareStatement(sql, columnIndexes);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#prepareStatement(java.lang.String, java.lang.String[])
+	 */
+	@Override
 	public PreparedStatement prepareStatement(String sql, String[] columnNames)
 			throws SQLException {
-		return conn.prepareStatement(sql, columnNames);
+		return connection.prepareStatement(sql, columnNames);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createStatement(int, int, int)
+	 */
+	@Override
 	public Statement createStatement(int resultSetType,
 			int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
-		return conn.createStatement(resultSetType, resultSetConcurrency,
+		return connection.createStatement(resultSetType, resultSetConcurrency,
 				resultSetHoldability);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setSavepoint()
+	 */
+	@Override
 	public Savepoint setSavepoint() throws SQLException {
-		return conn.setSavepoint();
+		return connection.setSavepoint();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setSavepoint(java.lang.String)
+	 */
+	@Override
 	public Savepoint setSavepoint(String name) throws SQLException {
-		return conn.setSavepoint(name);
+		return connection.setSavepoint(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#rollback(java.sql.Savepoint)
+	 */
+	@Override
 	public void rollback(Savepoint savepoint) throws SQLException {
-		conn.rollback(savepoint);
+		connection.rollback(savepoint);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#releaseSavepoint(java.sql.Savepoint)
+	 */
+	@Override
 	public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-		conn.releaseSavepoint(savepoint);
+		connection.releaseSavepoint(savepoint);
 	}
 
-	/**/
-
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createArrayOf(java.lang.String, java.lang.Object[])
+	 */
+	@Override
 	public Array createArrayOf(String typeName, Object[] elements)
 			throws SQLException {
-		return conn.createArrayOf(typeName, elements);
+		return connection.createArrayOf(typeName, elements);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createBlob()
+	 */
+	@Override
 	public Blob createBlob() throws SQLException {
-		return conn.createBlob();
+		return connection.createBlob();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createClob()
+	 */
+	@Override
 	public Clob createClob() throws SQLException {
-		return conn.createClob();
+		return connection.createClob();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createNClob()
+	 */
+	@Override
 	public NClob createNClob() throws SQLException {
-		return conn.createNClob();
+		return connection.createNClob();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createSQLXML()
+	 */
+	@Override
 	public SQLXML createSQLXML() throws SQLException {
-		return conn.createSQLXML();
+		return connection.createSQLXML();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#createStruct(java.lang.String, java.lang.Object[])
+	 */
+	@Override
 	public Struct createStruct(String typeName, Object[] attributes)
 			throws SQLException {
-		return conn.createStruct(typeName, attributes);
+		return connection.createStruct(typeName, attributes);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getClientInfo()
+	 */
+	@Override
 	public Properties getClientInfo() throws SQLException {
-		return conn.getClientInfo();
+		return connection.getClientInfo();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getClientInfo(java.lang.String)
+	 */
+	@Override
 	public String getClientInfo(String name) throws SQLException {
-		return conn.getClientInfo(name);
+		return connection.getClientInfo(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#isValid(int)
+	 */
+	@Override
 	public boolean isValid(int timeout) throws SQLException {
-		return conn.isValid(timeout);
+		return connection.isValid(timeout);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Wrapper#isWrapperFor(java.lang.Class)
+	 */
+	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return conn.isWrapperFor(iface);
+		return connection.isWrapperFor(iface);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setClientInfo(java.util.Properties)
+	 */
+	@Override
 	public void setClientInfo(Properties properties)
 			throws SQLClientInfoException {
-		conn.setClientInfo(properties);
+		connection.setClientInfo(properties);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setClientInfo(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public void setClientInfo(String name, String value)
 			throws SQLClientInfoException {
-		conn.setClientInfo(name, value);
+		connection.setClientInfo(name, value);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Wrapper#unwrap(java.lang.Class)
+	 */
+	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return conn.unwrap(iface);
+		return connection.unwrap(iface);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#abort(java.util.concurrent.Executor)
+	 */
 	@Override
 	public void abort(Executor executor) throws SQLException {
-		conn.abort(executor);
+		connection.abort(executor);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getNetworkTimeout()
+	 */
 	@Override
 	public int getNetworkTimeout() throws SQLException {
-		return conn.getNetworkTimeout();
+		return connection.getNetworkTimeout();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#getSchema()
+	 */
 	@Override
 	public String getSchema() throws SQLException {
-		return conn.getSchema();
+		return connection.getSchema();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setNetworkTimeout(java.util.concurrent.Executor, int)
+	 */
 	@Override
 	public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-		conn.setNetworkTimeout(executor, milliseconds);
+		connection.setNetworkTimeout(executor, milliseconds);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.sql.Connection#setSchema(java.lang.String)
+	 */
 	@Override
 	public void setSchema(String schema) throws SQLException {
-		conn.setSchema(schema);
+		connection.setSchema(schema);
 
 	}
 }

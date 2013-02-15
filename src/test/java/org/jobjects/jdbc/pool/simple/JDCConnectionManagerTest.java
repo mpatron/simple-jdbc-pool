@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.derby.impl.sql.compile.GetCurrentConnectionNode;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -20,9 +21,8 @@ import org.testng.annotations.Test;
  * 
  */
 public class JDCConnectionManagerTest {
-	private static Logger LOGGER = Logger.getLogger(JDCConnectionManagerTest.class.getCanonicalName());
 	
-
+	private Logger LOGGER = Logger.getLogger(getClass().getName());
 
 	/**
 	 * Test method for
