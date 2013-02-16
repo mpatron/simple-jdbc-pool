@@ -7,8 +7,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class JDCConnectionPool {
+	
+	private Logger LOGGER = Logger.getLogger(getClass().getName());
 
 	private List<JDCConnection> connections;
 	private String url, user, password;
@@ -37,11 +40,15 @@ public class JDCConnectionPool {
 
 	// ---------------------------------------------------------------------------
 
-	public synchronized void reapConnections() {
+	/**
+	 * Recueillir les connections
+	 */
+	private synchronized void reapConnections() {
 		long stale = System.currentTimeMillis() - timeout;
 		for (JDCConnection conn : connections) {
 			if ((conn.inUse()) && (stale > conn.getLastUse())
 					&& (!conn.validate())) {
+				LOGGER.info("Removing connection : "+conn.toString());
 				removeConnection(conn);
 			}
 		}
@@ -49,6 +56,9 @@ public class JDCConnectionPool {
 
 	// ---------------------------------------------------------------------------
 
+	/**
+	 * fermer les connections
+	 */
 	public synchronized void closeConnections() {
 		for (JDCConnection conn : connections) {
 			removeConnection(conn);
@@ -57,12 +67,21 @@ public class JDCConnectionPool {
 
 	// ---------------------------------------------------------------------------
 
+	/**
+	 * Supprimer la connection
+	 * @param conn
+	 */
 	private synchronized void removeConnection(JDCConnection conn) {
 		connections.remove(conn);
 	}
 
 	// ---------------------------------------------------------------------------
 
+	/**
+	 * Recuperer une connection
+	 * @return
+	 * @throws SQLException
+	 */
 	public synchronized Connection getConnection() throws SQLException {
 		for (JDCConnection conn : connections) {
 			if (conn.lease()) {
@@ -88,6 +107,10 @@ public class JDCConnectionPool {
 
 	// ---------------------------------------------------------------------------
 
+	/**
+	 * Retourner une connection
+	 * @param conn
+	 */
 	public synchronized void returnConnection(JDCConnection conn) {
 		conn.expireLease();
 	}

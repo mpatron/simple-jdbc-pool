@@ -5,13 +5,12 @@ package org.jobjects.jdbc.pool.simple;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
@@ -20,8 +19,7 @@ import org.testng.annotations.Test;
  */
 public class JDCConnectionDriverTest {
 
-	private static Logger LOGGER = Logger
-			.getLogger(JDCConnectionDriverTest.class.getCanonicalName());
+	private Logger LOGGER = Logger.getLogger(getClass().getName());
 
 	/**
 	 * Test method for
@@ -207,17 +205,49 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testJdbcCompliant() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url,
+					user, password, timeout, delay);
+			Assert.assertFalse(jdriver.jdbcCompliant());
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 	/**
 	 * Test method for
 	 * {@link org.jobjects.jdbc.pool.simple.JDCConnectionDriver#getParentLogger()}
 	 * .
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
 	@Test
 	public void testGetParentLogger() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
+			jdriver.getParentLogger();//une génération d'exception attendu.
+		} catch (SQLFeatureNotSupportedException sfe) {
+			Assert.assertEquals(sfe.getMessage(), "JDCConnectionDriver ne supporte pas les logger parent.");
+			LOGGER.log(Level.INFO, "!!! Erreur PREVU !!!");
+			Assert.assertTrue(true);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 	/**
@@ -226,7 +256,22 @@ public class JDCConnectionDriverTest {
 	 */
 	@Test
 	public void testGetPool() {
-		LOGGER.info("Not yet implemented");
+		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
+		String user = "sa";
+		String password = "manager";
+		long timeout = 60000;
+		long delay = 300000;
+		try {
+			JDCConnectionDriver jdriver = new JDCConnectionDriver(driver, url, user, password, timeout, delay);
+			Assert.assertNotNull(jdriver.getPool());
+		} catch (SQLFeatureNotSupportedException sfe) {
+			LOGGER.log(Level.INFO, "!!! Erreur PREVU !!!", sfe);
+			Assert.assertTrue(true);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
+			Assert.assertFalse(true);
+		}
 	}
 
 }

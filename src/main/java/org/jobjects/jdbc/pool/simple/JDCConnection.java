@@ -27,6 +27,10 @@ public class JDCConnection implements Connection {
 	private long timestamp;
 	// ---------------------------------------------------------------------------
 
+	protected JDCConnection() {
+		
+	}
+	
 	public JDCConnection(Connection connection, JDCConnectionPool pool) {
 		this.connection = connection;
 		this.pool = pool;

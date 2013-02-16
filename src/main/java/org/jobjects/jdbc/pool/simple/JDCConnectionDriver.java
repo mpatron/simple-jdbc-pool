@@ -240,7 +240,7 @@ public class JDCConnectionDriver implements Driver {
 	 */
 	@Override
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		return null;
+		throw new SQLFeatureNotSupportedException("JDCConnectionDriver ne supporte pas les logger parent.");
 	}
 	// ---------------------------------------------------------------------------
 	

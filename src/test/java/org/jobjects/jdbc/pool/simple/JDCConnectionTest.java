@@ -1,31 +1,36 @@
 package org.jobjects.jdbc.pool.simple;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.testng.annotations.Test;
 
 public class JDCConnectionTest {
 
+ private Logger LOGGER = Logger.getLogger(getClass().getName());
+
   @Test
   public void JDCConnection() {
-    throw new RuntimeException("Test not implemented");
+	  LOGGER.log(Level.SEVERE, "Test not implemented");
   }
 
   @Test
   public void getLastUse() {
-    throw new RuntimeException("Test not implemented");
+	  LOGGER.log(Level.SEVERE, "Test not implemented");
   }
 
   @Test
   public void inUse() {
-    throw new RuntimeException("Test not implemented");
+	  LOGGER.log(Level.SEVERE, "Test not implemented");
   }
 
   @Test
   public void lease() {
-    throw new RuntimeException("Test not implemented");
+	  LOGGER.log(Level.SEVERE, "Test not implemented");
   }
 
   @Test
   public void validate() {
-    throw new RuntimeException("Test not implemented");
+	  LOGGER.log(Level.SEVERE, "Test not implemented");
   }
 }

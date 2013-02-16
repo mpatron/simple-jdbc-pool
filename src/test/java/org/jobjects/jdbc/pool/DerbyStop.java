@@ -17,8 +17,8 @@ public class DerbyStop {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		try {
-			// DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
 			LOGGER.info("Extinction de Derby");
+			DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
 			LOGGER.log(Level.INFO, "Erreur prévu : " + ignored.getLocalizedMessage());

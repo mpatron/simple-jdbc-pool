@@ -89,29 +89,6 @@ public class JDCConnectionPoolTest {
 	}
 
 	@Test
-	public void reapConnections() {
-		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
-		String user = "sa";
-		String password = "manager";
-		long timeout = 500;
-		long delay = 300;
-		try {
-			JDCConnectionPool jpool = new JDCConnectionPool(url, user,
-					password, timeout, delay);
-
-			Connection connection = jpool.getConnection();
-			Assert.assertNotNull(connection);
-			Thread.sleep(600);
-			connection.close();
-			jpool.reapConnections();
-			Assert.assertTrue(jpool.getConnectionInUse() == 0);
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
-			Assert.assertFalse(true);
-		}
-	}
-
-	@Test
 	public void returnConnection() {
 		String url = "jdbc:derby:memory:MyDerbyDB;upgrade=true";
 		String user = "sa";
@@ -123,9 +100,9 @@ public class JDCConnectionPoolTest {
 					password, timeout, delay);
 
 			Connection connection = jpool.getConnection();
+			connection.close();
 			Assert.assertNotNull(connection);
 			Thread.sleep(600);
-			connection.close();
 			jpool.returnConnection((JDCConnection)connection);
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Erreur non prévu", e);
