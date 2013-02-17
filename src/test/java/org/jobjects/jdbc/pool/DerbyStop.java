@@ -19,9 +19,14 @@ public class DerbyStop {
 		try {
 			LOGGER.info("Extinction de Derby");
 			DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
+		} catch (Exception ignored) {
+			LOGGER.log(Level.INFO, "Extinction de memory:MyDerbyDB : " + ignored.getLocalizedMessage());
+		}
+		try {
+			LOGGER.info("Extinction de Derby");
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
-			LOGGER.log(Level.INFO, "Erreur prévu : " + ignored.getLocalizedMessage());
+			LOGGER.log(Level.INFO, "Extinction de derby : " + ignored.getLocalizedMessage());
 		}
 	}
 
