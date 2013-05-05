@@ -106,13 +106,15 @@
 				<executions>
 					<execution>
 						<id>jacoco-initialisation</id>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
 						<id>jacoco-generation-site</id>
-						<phase>pre-site</phase>
+						<!-- <phase>pre-site</phase> -->
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
