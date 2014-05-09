@@ -1,5 +1,7 @@
 package org.jobjects.tools.log;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -23,9 +25,23 @@ public class JObjectsLogFormatter extends Formatter {
     java.util.Formatter formatter = new java.util.Formatter(output, Locale.FRENCH);
     output.append("[");
     formatter.format("%-7s", record.getLevel());
-    output.append(']');
+    formatter.close();
+    output.append(" - ");
     // .append(Thread.currentThread().getName()).append('|')
-    output.append(" " + format.format(new Date(record.getMillis())));
+    output.append(format.format(new Date(record.getMillis())));
+    output.append(']');
+    output.append(" : ");
+    output.append(record.getSourceClassName()+"#"+record.getSourceMethodName());
+    
+    Object[] objects=record.getParameters();
+    if(null!=objects) {
+      for (Object object : objects) {
+        output.append(  (object!=null)?object.toString():"<null>" );
+        output.append(",");
+      }
+      
+    }
+    
     output.append(" : ");
     output.append(loggerName);
     output.append(" : ");
@@ -38,12 +54,29 @@ public class JObjectsLogFormatter extends Formatter {
 
     if (record.getThrown() != null) {
       output.append(System.lineSeparator());
-      output.append(record.getThrown().getMessage());
-      // output.append(ExceptionUtils.getStackTrace(record.getThrown()));
+      output.append(stackTraceToString(record.getThrown()));
     }
 
     output.append(System.lineSeparator());
     return output.toString();
   }
 
+  public String stackTraceToString(Throwable e) {
+    String returnValue=null;
+    if(null!=e) {
+      StringWriter sw = null;
+      try {
+        sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        pw.close();
+        sw.close();
+        returnValue=sw.toString();
+      } catch (Throwable t) {
+        returnValue="Log internal error and " + e.getMessage();
+      } 
+    }
+    return returnValue; 
+  }
+  
 }
