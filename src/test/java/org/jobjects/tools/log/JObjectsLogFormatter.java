@@ -29,25 +29,18 @@ public class JObjectsLogFormatter extends Formatter {
     output.append(" - ");
     // .append(Thread.currentThread().getName()).append('|')
     output.append(format.format(new Date(record.getMillis())));
-    output.append(']');
-    output.append(" : ");
+    output.append("] ");
     output.append(record.getSourceClassName()+"#"+record.getSourceMethodName());
     
-    Object[] objects=record.getParameters();
-    if(null!=objects) {
-      for (Object object : objects) {
-        output.append(  (object!=null)?object.toString():"<null>" );
-        output.append(",");
-      }
-      
-    }
-    
-    output.append(" : ");
-    output.append(loggerName);
     output.append(" : ");
 
     if (record.getParameters() != null) {
-      output.append(MessageFormat.format(record.getMessage(), record.getParameters()));
+      try {
+        output.append(MessageFormat.format(record.getMessage(), record.getParameters()));
+      } catch (Throwable t) {
+        output.append(record.getMessage());
+        output.append("[Internal log error :"+t.getMessage()+"]");
+      }
     } else {
       output.append(record.getMessage());
     }
@@ -69,9 +62,10 @@ public class JObjectsLogFormatter extends Formatter {
         sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
+        pw.flush();
+        returnValue=sw.toString();
         pw.close();
         sw.close();
-        returnValue=sw.toString();
       } catch (Throwable t) {
         returnValue="Log internal error and " + e.getMessage();
       } 
